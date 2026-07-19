@@ -24,3 +24,8 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[project.urls]
+"Homepage" = "https://github.com/prysthedev/TensorImmune"
+"Bug Tracker" = "https://github.com/prysthedev/TensorImmune/issues"
+"Source Code" = "https://github.com/prysthedev/TensorImmune"

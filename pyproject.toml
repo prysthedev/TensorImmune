@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tensorimmune"
+version = "0.1.0"
+description = "A lightweight Keras wrapper that injects Out-of-Distribution detection natively into a TensorFlow/Keras model's computational graph."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "Developer" }
+]
+dependencies = [
+    "tensorflow>=2.10.0",
+    "numpy"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

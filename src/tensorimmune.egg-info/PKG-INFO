@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: tensorimmune
-Version: 0.1.0
+Version: 0.1.2
 Summary: A lightweight Keras wrapper that injects Out-of-Distribution detection natively into a TensorFlow/Keras model's computational graph.
 Author: Developer
 License: MIT

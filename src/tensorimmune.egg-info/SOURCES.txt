@@ -11,4 +11,5 @@ src/tensorimmune.egg-info/SOURCES.txt
 src/tensorimmune.egg-info/dependency_links.txt
 src/tensorimmune.egg-info/requires.txt
 src/tensorimmune.egg-info/top_level.txt
+tests/test_challenging.py
 tests/test_model.py

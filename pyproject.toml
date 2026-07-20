@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tensorimmune"
-version = "0.1.1"
+version = "0.1.2"
 description = "A lightweight Keras wrapper that injects Out-of-Distribution detection natively into a TensorFlow/Keras model's computational graph."
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [
-    { name = "Developer" }
+    { name="Prys", email="contact@reddyw.space" }
 ]
 dependencies = [
     "tensorflow>=2.10.0",
@@ -26,6 +26,7 @@ dev = [
 where = ["src"]
 
 [project.urls]
-"Homepage" = "https://github.com/prysthedev/TensorImmune"
-"Bug Tracker" = "https://github.com/prysthedev/TensorImmune/issues"
-"Source Code" = "https://github.com/prysthedev/TensorImmune"
+Homepage = "https://github.com/prysthedev/TensorImmune"
+Repository = "https://github.com/prysthedev/TensorImmune.git"
+Issues = "https://github.com/prysthedev/TensorImmune/issues"
+Changelog = "https://github.com/prysthedev/TensorImmune/releases"

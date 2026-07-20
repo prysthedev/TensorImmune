@@ -4,6 +4,9 @@ Version: 0.1.0
 Summary: A lightweight Keras wrapper that injects Out-of-Distribution detection natively into a TensorFlow/Keras model's computational graph.
 Author: Developer
 License: MIT
+Project-URL: Homepage, https://github.com/prysthedev/TensorImmune
+Project-URL: Bug Tracker, https://github.com/prysthedev/TensorImmune/issues
+Project-URL: Source Code, https://github.com/prysthedev/TensorImmune
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 License-File: LICENSE

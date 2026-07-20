@@ -126,10 +126,14 @@ class ImmuneModel(tf.keras.Model):
             pooled_acts = self.pool_layer(monitor_acts)
             reconstructed = self.autoencoder(pooled_acts, training=True)
             
+            y_pred_for_task = task_output
+            if isinstance(y, dict) and isinstance(task_output, (list, tuple)):
+                y_pred_for_task = dict(zip(self.base_model_ref.output_names, task_output))
+                
             if hasattr(self, "compute_loss"):
-                loss = self.compute_loss(x=x, y=y, y_pred=task_output, sample_weight=sample_weight)
+                loss = self.compute_loss(x=x, y=y, y_pred=y_pred_for_task, sample_weight=sample_weight)
             else:
-                loss = self.compiled_loss(y, task_output, sample_weight=sample_weight, regularization_losses=self.losses)
+                loss = self.compiled_loss(y, y_pred_for_task, sample_weight=sample_weight, regularization_losses=self.losses)
             
             batch_mse = tf.reduce_mean(tf.square(pooled_acts - reconstructed), axis=-1)
             ae_loss = tf.reduce_mean(batch_mse)
@@ -143,10 +147,49 @@ class ImmuneModel(tf.keras.Model):
         self._update_calibration_stats(batch_mse)
         
         if hasattr(self, "compute_metrics"):
-            self.compute_metrics(x=x, y=y, y_pred=task_output, sample_weight=sample_weight)
+            self.compute_metrics(x=x, y=y, y_pred=y_pred_for_task, sample_weight=sample_weight)
             results = {m.name: m.result() for m in self.metrics}
         else:
-            self.compiled_metrics.update_state(y, task_output, sample_weight=sample_weight)
+            self.compiled_metrics.update_state(y, y_pred_for_task, sample_weight=sample_weight)
+            results = {m.name: m.result() for m in self.metrics}
+            
+        results["ae_loss"] = ae_loss
+        results["threshold"] = self.anomaly_threshold
+        return results
+
+    def test_step(self, data):
+        if len(data) == 3:
+            x, y, sample_weight = data
+        else:
+            x, y = data
+            sample_weight = None
+
+        extractor_outputs = self.feature_extractor(x, training=False)
+        task_output = extractor_outputs[:-1]
+        if self.base_output_count == 1:
+            task_output = task_output[0]
+        monitor_acts = extractor_outputs[-1]
+        
+        pooled_acts = self.pool_layer(monitor_acts)
+        reconstructed = self.autoencoder(pooled_acts, training=False)
+        
+        y_pred_for_task = task_output
+        if isinstance(y, dict) and isinstance(task_output, (list, tuple)):
+            y_pred_for_task = dict(zip(self.base_model_ref.output_names, task_output))
+            
+        if hasattr(self, "compute_loss"):
+            loss = self.compute_loss(x=x, y=y, y_pred=y_pred_for_task, sample_weight=sample_weight)
+        else:
+            loss = self.compiled_loss(y, y_pred_for_task, sample_weight=sample_weight, regularization_losses=self.losses)
+        
+        batch_mse = tf.reduce_mean(tf.square(pooled_acts - reconstructed), axis=-1)
+        ae_loss = tf.reduce_mean(batch_mse)
+        
+        if hasattr(self, "compute_metrics"):
+            self.compute_metrics(x=x, y=y, y_pred=y_pred_for_task, sample_weight=sample_weight)
+            results = {m.name: m.result() for m in self.metrics}
+        else:
+            self.compiled_metrics.update_state(y, y_pred_for_task, sample_weight=sample_weight)
             results = {m.name: m.result() for m in self.metrics}
             
         results["ae_loss"] = ae_loss

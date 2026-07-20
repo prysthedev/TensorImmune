@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tensorimmune"
-version = "0.1.0"
+version = "0.1.1"
 description = "A lightweight Keras wrapper that injects Out-of-Distribution detection natively into a TensorFlow/Keras model's computational graph."
 readme = "README.md"
 requires-python = ">=3.8"

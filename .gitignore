@@ -3,3 +3,4 @@
 tests/
 src/tensorimmune/__pycache__/
 tensorimmune_model.tflite
+dist/
